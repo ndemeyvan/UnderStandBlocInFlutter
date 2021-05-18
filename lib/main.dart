@@ -1,26 +1,41 @@
+import 'dart:developer';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:untitled/businness_logic/cubit/internet_cubit.dart';
 import 'package:untitled/presentation/pages/Home.dart';
 import 'package:untitled/presentation/pages/second_screen.dart';
 import 'package:untitled/presentation/router/app_routes.dart';
 import 'businness_logic/cubit/counter_cubit.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  // HydratedBloc.storage = await HydratedStorage.build();
+
+  runApp(MyApp(
+    appRouter: AppRouter(),
+    connectivity: Connectivity(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
+  final AppRouter appRouter;
+  final Connectivity connectivity;
+  const MyApp({@required this.appRouter, @required this.connectivity});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  AppRouter appRouter = AppRouter();
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CounterCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<InternetCubit>(create: (context) => InternetCubit(connectivity: widget.connectivity)),
+        BlocProvider<CounterCubit>(create: (context) => CounterCubit()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -29,7 +44,7 @@ class _MyAppState extends State<MyApp> {
         ),
 
         //AVEC GENERIC NAVIGATION
-        onGenerateRoute: appRouter.onGenerateRoute,
+        onGenerateRoute: widget.appRouter.onGenerateRoute,
         /////AVEC NAMED ROUTE NAVIGATION
         // routes: {
         //   '/': (context) =>
@@ -52,13 +67,11 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-
   /////ICI IL EST Question DE FERMER LE STREAM ET LE BLOC
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    appRouter.dispose();
+    widget.appRouter.dispose();
   }
 }
-
