@@ -7,31 +7,51 @@ import 'package:untitled/presentation/pages/second_screen.dart';
 import 'package:untitled/presentation/pages/thirdScreen.dart';
 
 class AppRouter {
-  CounterCubit counterCubit = CounterCubit();
+  // CounterCubit counterCubit = CounterCubit();
+
+  // Route onGenerateRoute(RouteSettings routeSettings) {
+  //   switch (routeSettings.name) {
+  //     case "/":
+  //       return MaterialPageRoute(builder: (_) =>
+  //           BlocProvider.value(
+  //             value: counterCubit,
+  //             child: MyHomePage(title: "Home Page"),
+  //           ));
+  //       break;
+  //     case "/second":
+  //       return MaterialPageRoute(
+  //           builder: (_) =>
+  //               BlocProvider.value(
+  //                 value: counterCubit,
+  //                 child: SecondPage(title: "Second Page"),
+  //               ));
+  //       break;
+  //     case "/third":
+  //       return MaterialPageRoute(builder: (_) =>
+  //           BlocProvider.value(
+  //             value:  counterCubit,
+  //             child: ThirdPage(),
+  //           ));
+  //       break;
+  //     default:
+  //       null;
+  //   }
+  // }
 
   Route onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case "/":
         return MaterialPageRoute(builder: (_) =>
-            BlocProvider.value(
-              value: counterCubit,
-              child: MyHomePage(title: "Home Page"),
-            ));
+            MyHomePage(title: "Home Page"));
         break;
       case "/second":
         return MaterialPageRoute(
             builder: (_) =>
-                BlocProvider.value(
-                  value: counterCubit,
-                  child: SecondPage(title: "Second Page"),
-                ));
+                SecondPage(title: "Second Page"));
         break;
       case "/third":
         return MaterialPageRoute(builder: (_) =>
-            BlocProvider.value(
-              value:  counterCubit,
-              child: ThirdPage(),
-            ));
+            ThirdPage());
         break;
       default:
         null;
@@ -39,7 +59,6 @@ class AppRouter {
   }
 
   void dispose (){
-    counterCubit.close();
   }
 
 }
